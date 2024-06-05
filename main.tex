@@ -1,0 +1,242 @@
+\documentclass[12pt,twoside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[export]{adjustbox}
+\usepackage[a4paper, top=25mm, bottom=25mm, inner=20mm, outer=30mm]{geometry}
+\usepackage{afterpage,blindtext,color,hyperref,ragged2e,graphicx,fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{newtxtext} 
+\usepackage{xcolor}
+\usepackage[explicit]{titlesec}
+\usepackage{lipsum, caption}
+\usepackage{type1cm}
+\usepackage[nopostdot,toc,acronym,nomain,nonumberlist]{glossaries}
+\usepackage[backend=biber,style=numeric-comp
+,sorting=none]{biblatex} 
+\addbibresource{references.bib}
+\usepackage{multirow}
+\usepackage{mfirstuc}
+\newcommand{\ssc}[1]{\textsc{\capitalisewords{\MakeLowercase{#1}}}}
+\newcommand{\asc}[1]{\textsc{{\MakeLowercase{#1}}}}
+\usepackage{pdfpages}
+\usepackage{bbold}
+\usepackage{appendix}
+\usepackage{slashed}
+\usepackage{datetime}
+\usepackage{graphicx}
+\usepackage{amsmath,bm,amsfonts}
+\usepackage[]{mdframed}
+\usepackage{adjustbox}
+\usepackage{hyperref}
+\usepackage{tabu}
+\usepackage{tabularray}
+\usepackage[most]{tcolorbox}
+
+\NewTblrTheme{longtable1}{
+    \DefTblrTemplate{conthead-text}{fancy}{}
+        \SetTblrTemplate{conthead-text}{fancy}
+
+    \DefTblrTemplate{contfoot-text}{fancy}{[Continue on next page]}
+        \SetTblrTemplate{contfoot-text}{fancy}
+
+    \DefTblrTemplate{caption}{default}{
+        \UseTblrTemplate{caption-tag}{default}
+        \UseTblrTemplate{caption-sep}{default}
+        \UseTblrTemplate{caption-text}{default}
+        }
+    \DefTblrTemplate{capcont}{default}{
+        \UseTblrTemplate{caption-tag}{}
+        \UseTblrTemplate{caption-sep}{}
+        \UseTblrTemplate{caption-text}{}
+        \UseTblrTemplate{conthead-text}{}
+        }}
+
+\newdateformat{monthyeardate}{%
+  \monthname[\THEMONTH], \THEYEAR}
+
+\titlespacing{\section}{0pt}{0}{0}
+\titlespacing{\subsection}{0pt}{0}{0}
+
+\makeatletter
+\def\ttl@mkchap@i#1#2#3#4#5#6#7{%
+    \ttl@assign\@tempskipa#3\relax\beforetitleunit
+    \vspace{\@tempskipa}%<<<<<< REMOVE THE * AFTER \vspace
+    \global\@afterindenttrue
+    \ifcase#5 \global\@afterindentfalse\fi
+    \ttl@assign\@tempskipb#4\relax\aftertitleunit
+    \ttl@topmode{\@tempskipb}{%
+        \ttl@select{#6}{#1}{#2}{#7}}%
+    \ttl@finmarks  % Outside the box!
+    \@ifundefined{ttlp@#6}{}{\ttlp@write{#6}}}
+\makeatother
+
+\renewcommand{\chaptermark}[1]{\markboth{{\chaptername\ \thechapter.\ #1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{{\sectionname\ \thesection.\ #1}}{}}
+
+\newcommand*\NewPage{\newpage\null\thispagestyle{empty}\newpage}
+
+\setlength{\parskip}{0.6em}
+\setlength{\parindent}{20pt}
+\graphicspath{{images/}}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\hypersetup{colorlinks=false,linktoc=all, linkcolor=LimeGreen}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\leftmark}
+\fancyhead[RO]{\rightmark}
+\fancyfoot[LE,RO]{\thepage}
+
+\titleformat{\title}[display]
+  {\flushright\normalfont\fontsize{50}{}\sffamily\bfseries}
+  {\sffamily\fontsize{50}{50}\textbf{\textcolor{LimeGreen}{{\partname}~\thetitle\vskip40pt}}}{0pt}
+  {\textcolor{LimeGreen}{\fontsize{40}{0}{#1}\vskip10pt}\titlespacing*{\part}{0pt}{-1pt}{0pt}}
+
+\titleformat{\part}[display]
+  {\flushleft\normalfont\fontsize{50}{}\sffamily\bfseries}
+  {\sffamily\fontsize{80}{50}\textbf{\textcolor{LimeGreen}{{\partname}~\thepart\vskip40pt}}}{0pt}
+  {\textcolor{LimeGreen}{\fontsize{40}{10}{#1}\vskip10pt}\titlespacing*{\part}{0pt}{0pt}{0pt}}
+
+
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\sffamily\bfseries}
+  {\sffamily\flushright\fontsize{70}{0}\textbf{\textcolor{LimeGreen}{{\Huge\chaptername}~\thechapter\vskip0pt\rule{\textwidth}{5pt}}}}{0pt}
+  {\flushleft\textcolor{LimeGreen}{\fontsize{40}{0}{#1}}\titlespacing*{\chapter}{0pt}{0pt}{-40pt}}
+  
+\titleformat{\section}[display]
+  {\normalfont\large\sffamily\bfseries}
+  {\textbf{\textcolor{LimeGreen}{\large}}}{0pt}
+  {\flushleft\textcolor{LimeGreen}{\fontsize{40}{0}{~\thesection \ #1}}\titlespacing*{\section}{0pt}{0pt}{-40pt}}
+
+  
+\titleformat{\subsection}[display]
+  {\normalfont\normal\sffamily\bfseries}
+  {\textbf{\textcolor{LimeGreen}{\normal}}}{0pt}
+  {\flushleft\textcolor{LimeGreen}{\fontsize{30}{0}{~\thesubsection \ #1}}\titlespacing*{\subsection}{0pt}{0pt}{-40pt}}
+
+%\makeglossaries
+
+\usepackage{chngcntr}
+\counterwithout{table}{section}
+
+\usepackage{listings}
+\definecolor{codeLimeGreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codeLimeGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+\usepackage{enumitem}
+\usepackage{xcolor}
+%\usepackage[title]{appendix}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+\definecolor{codegray}{gray}{0.9}
+\newcommand{\code}[1]{\colorbox{codegray}{\texttt{#1}}}
+
+\include{style_declarations}
+
+
+\includeonly{%
+	chapters/intro,
+%	chapters/exercise,
+%	sections/setup,
+%	sections/strategy,
+%	sections/calibrator,
+%	sections/selector,
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\pagenumbering{roman}
+
+\begin{titlepage}
+\newgeometry{top=5mm, bottom=5mm, inner=5mm, outer=5mm}
+\begin{center}
+    \scshape 
+    
+    \includegraphics[scale=0.7]{images/logos.png}  \\ \vspace{100pt}
+    
+    \begin{Huge} {\sffamily{Hands-on Analysis Exercise\\ \vspace{20pt} $H \rightarrow ZZ \rightarrow 4l$  }} \end{Huge} \\\vspace{20pt}
+    \begin{Large}
+    {\sffamily{with}}
+    \end{Large} \\ \vspace{20pt}
+    
+    \includegraphics[scale=0.1]{images/cf_logo.png} \\ \vspace{100pt}
+    
+    \begin{large} {\sffamily{Authors}} \end{large}  \\ \vspace{5pt}
+    
+    \begin{Large} {\sffamily{Matteo Bonanomi, Philip Keicher \\ \vspace{10pt} Daniel Savoiu, Ana Andrade}}  \end{Large}  \\\vspace{80pt} 
+    
+    \begin{large} {\sffamily{March 2024}} \end{large} \\ \vspace{50pt}
+    
+    \begin{small} {\sffamily{This exercise was originally created for the Higgs PAG exercise at the \\ CMS Physics Objects \& Data Analysis School held in Hamburg in October 2023}} \end{small}
+
+\end{center}
+\end{titlepage}
+\newgeometry{top=25mm, bottom=25mm, inner=20mm, outer=30mm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage   
+\thispagestyle{empty}
+\vspace*{1cm}
+    \begin{center}\textbf{}\end{center}
+
+\newpage
+\thispagestyle{plain}
+\thispagestyle{empty}
+\tableofcontents
+\pagenumbering{arabic}
+\pagestyle{fancy}
+\captionsetup{justification=raggedright,singlelinecheck=false}
+
+\input{chapters/intro}    
+\input{chapters/exercise}    
+
+%\printbibliography
+
+\end{document}
