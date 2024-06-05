@@ -1,0 +1,30 @@
+\chapter{Introduction to \columnflow}
+\columnflow is intended as a back-end for analyses in order to facilitate processing large amounts of data.
+It is purely python-based and employs multiple packages that are well-received and {-maintained} in the HEP community.
+At the time of writing these instructions, the team of developer's purely consists of data analysts at the CMS experiment.
+Therefore, this exercise is structured accordingly.
+Please note that \columnflow is in principle designed in an experiment-agnostic way, such that it can also be extended to other use cases.
+
+Additionally, please note that this hands-on exercise is not meant to fully document all available functionalities.
+The purpose of this exercise is to give an overview of the most fundamental aspects and concepts that are available at the time of writing.
+For a more comprehensive overview, please visit the official documentation~\cite{cf_repo}. % might want to put this as a proper reference
+In case of any questions are comments, feel free to contact the maintainers for example via the git repository~\cite{cf_repo}.
+
+\section{General Structure}
+\begin{figure}[p]
+	\centering
+	\includegraphics[width=\textwidth]{images/CF_tasks.png}
+	\Caption{\columnflow task graph hierarchy}{The tasks are arranged in three sections that correspond to general work packages when analysing data.
+		The line strengths and styles indicate the behaviour when propagating information between tasks.
+		For more information, please consider ref.~\cite{cf_repo}.
+}
+	\label{fig:task_graph}
+\end{figure}
+
+The guiding principle of \columnflow is that all analyses share basic work packages that need to be done when processing data.
+Examples for such packages could be the calibration of relevant objects, applying selections to define a fiducial phase space for the analysis or the calculation of some sensitive observables, which are discussed in more detail in later chapters of this document.
+\columnflow defines these work packages as law tasks, which can define dependencies amongst each other and will only run necessary tasks to obtain the requested output.
+
+
+Figure~\ref{fig:task_graph} depicts an overview of the available tasks and their dependencies.
+The highlighted regions indicate use cases that are discussed in chapter~\ref{chap:basics}.
