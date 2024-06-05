@@ -1,4 +1,4 @@
-\documentclass[12pt,twoside]{report}
+\documentclass[12pt,twoside]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[export]{adjustbox}
 \usepackage[a4paper, top=25mm, bottom=25mm, inner=20mm, outer=30mm]{geometry}
@@ -6,6 +6,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{newtxtext} 
 \usepackage{xcolor}
+\usepackage{xspace}
 \usepackage[explicit]{titlesec}
 \usepackage{lipsum, caption}
 \usepackage{type1cm}
@@ -19,7 +20,7 @@
 \newcommand{\asc}[1]{\textsc{{\MakeLowercase{#1}}}}
 \usepackage{pdfpages}
 \usepackage{bbold}
-\usepackage{appendix}
+\usepackage[title]{appendix}
 \usepackage{slashed}
 \usepackage{datetime}
 \usepackage{graphicx}
@@ -30,6 +31,7 @@
 \usepackage{tabu}
 \usepackage{tabularray}
 \usepackage[most]{tcolorbox}
+
 
 \NewTblrTheme{longtable1}{
     \DefTblrTemplate{conthead-text}{fancy}{}
@@ -53,24 +55,25 @@
 \newdateformat{monthyeardate}{%
   \monthname[\THEMONTH], \THEYEAR}
 
-\titlespacing{\section}{0pt}{0}{0}
-\titlespacing{\subsection}{0pt}{0}{0}
+\titlespacing{\section}{0pt}{0pt}{0pt}
+\titlespacing{\subsection}{0pt}{0pt}{0pt}
 
-\makeatletter
-\def\ttl@mkchap@i#1#2#3#4#5#6#7{%
-    \ttl@assign\@tempskipa#3\relax\beforetitleunit
-    \vspace{\@tempskipa}%<<<<<< REMOVE THE * AFTER \vspace
-    \global\@afterindenttrue
-    \ifcase#5 \global\@afterindentfalse\fi
-    \ttl@assign\@tempskipb#4\relax\aftertitleunit
-    \ttl@topmode{\@tempskipb}{%
-        \ttl@select{#6}{#1}{#2}{#7}}%
-    \ttl@finmarks  % Outside the box!
-    \@ifundefined{ttlp@#6}{}{\ttlp@write{#6}}}
-\makeatother
-
-\renewcommand{\chaptermark}[1]{\markboth{{\chaptername\ \thechapter.\ #1}}{}}
-\renewcommand{\sectionmark}[1]{\markright{{\sectionname\ \thesection.\ #1}}{}}
+%\makeatletter
+%\def\ttl@mkchap@i#1#2#3#4#5#6#7{%
+%    \ttl@assign\@tempskipa#3\relax\beforetitleunit
+%    \vspace{\@tempskipa}%<<<<<< REMOVE THE * AFTER \vspace
+%    \global\@afterindenttrue
+%    \ifcase#5 \global\@afterindentfalse\fi
+%    \ttl@assign\@tempskipb#4\relax\aftertitleunit
+%    \ttl@topmode{\@tempskipb}{%
+%        \ttl@select{#6}{#1}{#2}{#7}}%
+%    \ttl@finmarks  % Outside the box!
+%    \@ifundefined{ttlp@#6}{}{\ttlp@write{#6}}}
+%\makeatother
+%
+%\renewcommand{\chaptermark}[1]{\markboth{{\chaptername\ \thechapter.\ #1}}{}}
+% Following line generates undefined control sequence: section for me, so comment it out for now
+%\renewcommand{\sectionmark}[1]{\markright{{\sectionname\ \thesection.\ #1}}{}}
 
 \newcommand*\NewPage{\newpage\null\thispagestyle{empty}\newpage}
 
@@ -147,7 +150,7 @@
 \lstset{style=mystyle}
 \usepackage{enumitem}
 \usepackage{xcolor}
-%\usepackage[title]{appendix}
+
 
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -178,16 +181,19 @@
 \definecolor{codegray}{gray}{0.9}
 \newcommand{\code}[1]{\colorbox{codegray}{\texttt{#1}}}
 
-\include{style_declarations}
+\input{style_declarations}
 
-
+% define which files to consider for compilation.
+% Nice to test compile smaller parts of the document without changing the toc/page numbering
 \includeonly{%
 	chapters/intro,
-%	chapters/exercise,
-%	sections/setup,
-%	sections/strategy,
-%	sections/calibrator,
-%	sections/selector,
+	sections/general_intro,
+	chapters/exercise,
+	sections/goal,
+	sections/setup,
+	sections/strategy,
+	sections/calibrator,
+	sections/selector,
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -195,6 +201,7 @@
 \pagenumbering{roman}
 
 \begin{titlepage}
+	\frontmatter
 \newgeometry{top=5mm, bottom=5mm, inner=5mm, outer=5mm}
 \begin{center}
     \scshape 
@@ -221,22 +228,19 @@
 \newgeometry{top=25mm, bottom=25mm, inner=20mm, outer=30mm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newpage   
-\thispagestyle{empty}
-\vspace*{1cm}
-    \begin{center}\textbf{}\end{center}
-
-\newpage
-\thispagestyle{plain}
-\thispagestyle{empty}
 \tableofcontents
-\pagenumbering{arabic}
+\listoffigures
+\listoftables
+
+\mainmatter
+\thispagestyle{empty}
+
 \pagestyle{fancy}
 \captionsetup{justification=raggedright,singlelinecheck=false}
 
 \input{chapters/intro}    
 \input{chapters/exercise}    
-
-%\printbibliography
+\appendix
+\printbibliography
 
 \end{document}
