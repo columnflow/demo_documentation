@@ -1,2 +1,77 @@
 \chapter{Basic Functionalities}\label{chap:basics}
+This chapter illustrates how to employ the most basic features of \columnflow.
+By the end of it, you should be able to perform a calibration, apply a selection, calculate an observable and finally also produce the corresponding distribution for multiple processes.
+Please note that this chapter is merely meant to summarize the most important aspects of these features.
+For a more in-depth discussion and presentation, please consider Ref.~\cite{cf_repo}.
+
 \section{The Mother of all: TaskArrayFunctions}\label{sec:taskarrayfunc}
+
+Before getting started with the details of the implementation, we will cover the basic structure of the most relevant building blocks of \columnflow.
+These objects are all derived from the so-called \CCSPStlye{TaskArrayFunction}, which defines hooks and interfaces to propagate information from your objects to the \columnflow tasks.
+
+This class of objects can for example explicitly define some runtime dependencies with the following member variables:
+\begin{description}
+	\item[uses] is a set of column names that are to be retrieved from disk.
+	You can also provide other \CCSPStlye{TaskArrayFunction}s here, in which case their \texttt{uses} set is appended to this one.
+	\item[produces] is a set of columns that are to be written to disk.
+	You can also provide other \CCSPStlye{TaskArrayFunction}s here, in which case their \texttt{produces} set is appended to this one.
+	\item[sandbox] is a hook that is propagated to the actual Task instance that is run and calls your module.
+	This defines the software environment in which your module needs to run, which allows for a granular definition of the required software and can minimize the overhead of your software packages.
+	
+\end{description}
+
+For convenience, all  \CCSPStlye{TaskArrayFunction}s provide decorators to easily define new modules:
+
+\begin{lstlisting}[language=python]
+	# assuming you want to define the TaskArrayFunction example
+	@example(
+		# for example, request the Jet pt, all Electron information and everything another 
+		uses = {
+			"Jet.pt",  # request transverse momentum for all jets
+			"Electron.*",  # request all information for electrons
+			some_other_TaskArrayFunction  # propagate everything some_other_TaskArrayFunction needs to this example TaskArrayFunction
+	    },
+	    # define which outputs are to be written to disk
+	    produces={
+	    	"some_fancy_output"
+	    },
+	    # define in what kind of software environment this module should be run
+	    sandbox="some_cool_sandbox"
+	)
+	def your_new_example_module(events: ak.Array, **kwargs):
+	    # this is the main body of your module, do something here...
+\end{lstlisting}
+
+Additionally, \CCSPStlye{TaskArrayFunction}s provide a set of hooks, three of which are of special importance and are briefly introduced in the following:
+\begin{description}
+	\item[init] defines instructions that are to be done when this object is first initialised.
+	\item[requires] adds object-specific requirements on top of the pre-existing Task-level requirements.
+	This allows to explicitly define dependencies and can for example ensure that the output of another module is calculated before starting with the current task.
+	\item[setup] is run before actually entering the main body of your module that performs e.g.\ calculations.
+	This is for example useful to parse the output of the aforementioned requirements such that your object can also use it.
+	
+\end{description}
+
+These hooks can be added to an existing  \CCSPStlye{TaskArrayFunction} instance with dedicated decorators like so:
+
+\begin{lstlisting}[language=python]
+	# assuming you have defined your_new_example_module from the example above
+	
+	# define your init function
+	@your_new_example_module.init
+	def some_init_func_name(self):
+	    # do something when your_new_example_module is first initialized
+	    
+	# define some special requirements for your module
+	@your_new_example_module.requires
+	def some_func_name_for_requires(self):
+	    # add some requirements
+	
+	# do something before entering the main body of your module
+	@your_new_example_module.setup
+	def some_setup_func_name(self, **kwargs):
+	    # prepare your module so it runs smoothly
+\end{lstlisting}
+
+In the following, these concepts will be shown with concrete details.
+
