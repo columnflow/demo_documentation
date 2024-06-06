@@ -1,7 +1,7 @@
 \section{Installation \& Setup}
 \justifying
 \begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,width=\textwidth]
-Note: ColumnFlown only runs on Linux and may require up to 4 GB of disc space. \tcblower
+Note: \columnflow only runs on Linux and may require up to 4 GB of disc space. \tcblower
 Also, the machine where you run this exercise must be mounted with CERN AFS.
 \end{tcolorbox}
 
@@ -41,14 +41,14 @@ git clone --recursive https://gitlab.cern.ch/<cern_username>/columnflow-demo.git
 git clone --recursive ssh://git@gitlab.cern.ch:7999/<cern_username>/columnflow-demo.git
 \end{lstlisting}
 
-The directory you have thus created will be referred to as \code{basedir}. You can now go inside your local repository and install ColumnFlow. The \code{setup.sh} bash script will initialize the software environment with \code{micromamba}. Here, we define \code{dev} as the setup name, but you are free to name it as you wish.
+The directory you have thus created will be referred to as \code{basedir}. You can now go inside your local repository and install \columnflow. The \code{setup.sh} bash script will initialize the software environment with \code{micromamba}. Here, we define \code{dev} as the setup name, but you are free to name it as you wish.
 
 \begin{lstlisting}[language=bash]
 cd columnflow-demo
 source setup.sh dev
 \end{lstlisting}
 
-You will be asked to define a series of variables, the first of which is your CERN username. For all other variables you can keep the default name by just pressing \code{Enter}. Variables specific to this exercise will start with \code{H4L\_}, while ColumnFlow specific variables start with \code{CF\_}. You can find all variables in the \code{.setups/dev.sh} bash file. We invite you to check out this file and familiarize yourself with these variables.
+You will be asked to define a series of variables, the first of which is your CERN username. For all other variables you can keep the default name by just pressing \code{Enter}. Variables specific to this exercise will start with \code{H4L\_}, while \columnflow specific variables start with \code{CF\_}. You can find all variables in the \code{.setups/dev.sh} bash file. We invite you to check out this file and familiarize yourself with these variables.
 
 \begin{figure}[!h]
     \centering
@@ -57,9 +57,9 @@ You will be asked to define a series of variables, the first of which is your CE
 
 Note that the first installation of the software can take \underline{up to several minutes}. 
 
-Every time you want to work with ColumnFlow (e.g.\ if you open a new terminal window), you will need to source the \code{setup.sh} script again.
+Every time you want to work with \columnflow (e.g.\ if you open a new terminal window), you will need to source the \code{setup.sh} script again.
 
-Once the installation is complete you should see a line of green text stating that the analysis has been successfully set up. You are now ready to start working with ColumnFlow! 
+Once the installation is complete you should see a line of green text stating that the analysis has been successfully set up. You are now ready to start working with \columnflow! 
 
 \begin{figure}[!h]
     \centering
@@ -72,7 +72,7 @@ Inside of your newly created \code{columnflow-demo} directory, you will find the
     \includegraphics[scale=0.62]{images/CF_demo.png}
 \end{figure}
 
-%\subsection{ColumnFlow Tasks}
+%\subsection{\columnflow Tasks}
 
 This exercise is organized in the form of \code{law} tasks, where different tasks create some form of output. By default, these tasks will save their output on a remote file system (e.g.\ \texttt{WLGC}), for which you will require a \code{voms-proxy}. If you would like to save certain/all outputs locally, we recommend to create a directory on a system with a larger amount of disk space (e.g.\ \texttt{EOS}). For such cases, you will need to update the \code{law.cfg} file accordingly. You can view the available tasks by running:
 \begin{lstlisting}[language=bash]
