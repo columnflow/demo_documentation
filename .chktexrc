@@ -1,0 +1,16 @@
+
+# in the base directory of your project
+
+QuoteStyle = Traditional
+
+VerbEnvir
+{
+    verbatim comment listing verbatimtab rawhtml errexam picture texdraw
+    filecontents pgfpicture tikzpicture minted lstlisting texttt
+    solution
+}
+
+CmdLine
+{
+    --nowarn 1 --nowarn 8 --nowarn 13
+}
