@@ -1,28 +1,26 @@
 \chapter{Introduction to \columnflow}
-\columnflow is intended as a back-end for analyses in order to facilitate processing large amounts of data.
-It is purely python-based and employs multiple packages that are well-received and {-maintained} in the HEP community.
-At the time of writing these instructions, the team of developer's purely consists of data analysts at the CMS experiment.
-Therefore, this exercise is structured accordingly.
-Please note that \columnflow is in principle designed in an experiment-agnostic way, such that it can also be extended to other use cases.
+\columnflow is a back-end for analyses in order to facilitate processing large amounts of data.
+It is purely python-based and employs multiple packages that are common in the HEP community and well-maintained.
+At the time of writing these instructions, the team of developers purely consists of data analysts at the CMS experiment.
+Therefore, this exercise is structured accordingly. However, ColumnFlow is designed in an experiment agnostic way and it can be extended to other use cases.
 
 Additionally, please note that this hands-on exercise is not meant to fully document all available functionalities.
 The purpose of this exercise is to give an overview of the most fundamental aspects and concepts that are available at the time of writing.
-For a more comprehensive overview, please visit the official documentation~\cite{cf_repo}. % might want to put this as a proper reference
-In case of any questions are comments, feel free to contact the maintainers for example via the git repository~\cite{cf_repo}.
+For a more comprehensive overview, please visit the documentation~\cite{cf_repo}. % might want to put this as a proper reference
+In case of any questions or comments, feel free to contact the maintainers for example via the git repository~\cite{cf_repo}.
 
-\section{General Structure}
+\section{General structure}
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=\textwidth]{images/CF_tasks.png}
-	\Caption{\columnflow task graph hierarchy}{The tasks are arranged in three sections that correspond to general work packages when analysing data.
-		The line strengths and styles indicate the behaviour when propagating information between tasks.
-		For more information, please consider ref.~\cite{cf_repo}.
+	\Caption{\columnflow task graph hierarchy}{The tasks are arranged in three sections that correspond to general work packages in a data analysis.
+		The line widths and styles indicate the behaviour when propagating information between tasks, as illustrated in the GitHub Wiki ~\cite{cf_repo}.
 }\label{fig:task_graph}
 \end{figure}
 
 The guiding principle of \columnflow is that all analyses share basic work packages that need to be done when processing data.
 Examples for such packages could be the calibration of relevant objects, applying selections to define a fiducial phase space for the analysis or the calculation of some sensitive observables, which are discussed in more detail in later chapters of this document.
-\columnflow defines these work packages as law tasks, which can define dependencies amongst each other and will only run necessary tasks to obtain the requested output.
+\columnflow defines the work packages as \texttt{law} tasks, which can define dependencies amongst each other and will only run necessary tasks to obtain the requested output.
 
 
 Figure~\ref{fig:task_graph} depicts an overview of the available tasks and their dependencies.
@@ -32,16 +30,16 @@ The first block is dedicated to prepare these events for further analysis.
 Such a preparation can entail different things, such as a calibration of the relevant objects in an analysis or the application of selection criteria to define a relevant work space.
 In order to facilitate a more efficient calculation in later parts of this workflow, the amount of data is reduced as a last step of the first plot.
 
-The second block illustrated in fig.~\ref{fig:task_graph} is dedicated to the calculation of different observables and metrics.
+The second block in Fig.~\ref{fig:task_graph} is dedicated to the calculation of different observables and metrics.
 At the time of writing these instructions, this blocks offers metrics such as a summary of efficiencies for different stages of the selections and their effect on observables, the calculation of completely new variables and also more complex calculations based on machine learning.
-Moreover, it offers the functionality to collect all information of the workflow and save it as a flat tuple in the e.g.\ ROOT or parquet format.
+Moreover, it offers the functionality to collect all information of the workflow and save it as a flat tuple in the e.g.\ ROOT or PARQUET format.
 The modular structure of the individual tasks allows for an easy extensions to calculate a variety of observables.
 
-Finally, the last block is dedicated to the final quantities that are needed for the analysis.
+Finally, the last block is dedicated to the final observables that are needed for the analysis.
 Most of these endpoints of the workflow aim to facilitate a data analysis in a binned format, though this is not a hard criterion.
-This includes producing figures illustrating one- or two-dimensional distributions of multiple physics processes under consideration of a wide variety of systematic uncertainties, as well as the input needed for a statistical inference based on the data (e.g.\ datacards for the Combine tool within CMS).
+This includes producing figures illustrating one- or two-dimensional distributions of multiple physics processes under consideration of a wide variety of systematic uncertainties, as well as the input needed for a statistical inference based on the data (e.g.\ datacards for the Combine tool within CMS~\cite{combine}).
 
-This structure allows for a full end-to-end analysis.
-The explicit definition of dependencies in the code and the implicit check for existing outputs provided by luigi and law result in a sustainable and reproducible workflow that is easily triggered with a single command.
-In the following, these capabilities are illustrated using an example that is based on the $H\rightarrow4l$ analysis, for which we will build a selection of the aforementioned modules.
+This structure allows a full end-to-end analysis.
+The explicit definition of dependencies in the code and the implicit check for existing outputs provided by \texttt{luigi} and \texttt{law} result in an automatically organised and reproducible workflow that is easily triggered with a single command.
+In the following, these capabilities are illustrated using an example that is based on the $H\rightarrow4l$ analysis~\cite{h4l_analysis}, for which we will build a selection of the aforementioned modules.
 Please note that this example is by no means as complex and sophisticated as the real CMS analysis, and should therefore not be expected to yield the same results.
