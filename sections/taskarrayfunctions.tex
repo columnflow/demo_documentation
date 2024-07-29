@@ -1,10 +1,11 @@
 \chapter{Basic Functionalities}\label{chap:basics}
+
 This chapter illustrates how to employ the most basic features of \columnflow.
 By the end of it, you should be able to perform a calibration, apply a selection, calculate an observable and finally also produce the corresponding distribution for multiple processes.
 Please note that this chapter is merely meant to summarize the most important aspects of these features.
 For a more in-depth discussion and presentation, please consider Ref.~\cite{cf_repo}.
 
-\section{The Mother of all: TaskArrayFunctions}\label{sec:taskarrayfunc}
+\section{The mother of all: TaskArrayFunctions}\label{sec:taskarrayfunc}
 
 Before getting started with the details of the implementation, we will cover the basic structure of the most relevant building blocks of \columnflow.
 These objects are all derived from the so-called \CCSPStlye{TaskArrayFunction}, which defines hooks and interfaces to propagate information from your objects to the \columnflow tasks.
@@ -74,4 +75,3 @@ These hooks can be added to an existing  \CCSPStlye{TaskArrayFunction} instance 
 \end{lstlisting}
 
 In the following, these concepts will be shown with concrete details.
-
