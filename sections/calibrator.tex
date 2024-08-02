@@ -1,1 +1,84 @@
 \section{Writing a Calibrator}\label{sec:calibrator}
+
+\CCSPStlye{Calibrator}s are dedicated \CCSPStlye{TaskArrayFunctions} that perform a calibration of objects, such as jets, leptons or missing transverse energy.
+Since this calibration modifies the four-momenta in the events, they can influence the selection of a given analysis.
+Therefore, calibrations should generally be performed before applying analysis selections.
+The associated task within the workflow is \CCSPStlye{cf.CalibrateEvents}, which is executed before the selection modules within the task graph.
+
+\columnflow provides generally-used calibrations for different objects which follow the common (CMS) guidelines.
+For more information about which calibrations are implemented and how to use them, we recommend to consult the current status of the documentation~\cite{cf_repo}.
+
+The \code{H4L} analysis includes an exemplary \CCSPStlye{Calibrator} in \code{h4l/calibration/jets.py}.
+In this module, we perform a calibration of jets in our events, which is based on the implementation that comes with \columnflow itself.
+
+% TODO: include code here?
+%\begin{lstlisting}[language=python]
+%	# coding: utf-8
+%	
+%	"""
+%	Jet energy calibration methods.
+%	"""
+%	
+%	from columnflow.calibration import Calibrator, calibrator
+%	from columnflow.calibration.cms.jets import jec, jer
+%	from columnflow.util import maybe_import
+%	
+%	ak = maybe_import("awkward")
+%	
+%	
+%	# custom jec calibrator that only runs nominal correction
+%	jec_nominal = jec.derive("jec_nominal", cls_dict={"uncertainty_sources": []})
+%	
+%	
+%	@calibrator(
+%	uses={jec_nominal},
+%	produces={jec_nominal},
+%	)
+%	def jet_energy(self: Calibrator, events: ak.Array, **kwargs) -> ak.Array:
+%	"""
+%	Common calibrator for jet energy corrections, applying nominal JEC for data, and JEC with
+%	uncertainties plus JER for MC. Information about used and produced columns and dependent
+%	calibrators is added in a custom init function below.
+%	"""
+%	# correct jet energy scale
+%	events = self[jec_nominal](events, **kwargs)
+%	
+%	# jet energy resolution smearing (MC only)
+%	if self.dataset_inst.is_mc:
+%	events = self[jer](events, **kwargs)
+%	
+%	return events
+%	
+%	
+%	@jet_energy.init
+%	def jet_energy_init(self: Calibrator) -> None:
+%	# return immediately if dataset object has not been loaded yet
+%	if not getattr(self, "dataset_inst", None):
+%	return
+%	
+%	# add columns producs by JER smearing calibrator (MC only)
+%	if self.dataset_inst.is_mc:
+%	self.uses.add(jer)
+%	self.produces.add(jer)
+%	
+%\end{lstlisting}
+
+First the relevant modules are imported.
+Note that \code{awkward} is loaded with the \code{maybe\_import} mechanism.
+This is necessary due to the encapsulated structure of the underlying software stack.
+In the scope of this exercise, we don't want to consider all the different sources of uncertainties that are associated with jet calibration yet.
+Therefore, we use the \code{derive} mechanism of \CCSPStlye{TaskArrayFunctions} to define a new class called \code{jec\_nominal}, which inherits from the original \code{jec} \CCSPStlye{Calibrator} but overwrites the corresponding class member variable.
+
+Next, we define our new \CCSPStlye{Calibrator} class \code{jet\_energy} as shown before.
+Since we want to call the \code{jec\_nominal} class within this \CCSPStlye{Calibrator}, we need to add it to the \code{uses} set.
+This will load all columns that \code{jec\_nominal} needs, and will additionally make \code{jec\_nominal} accessible within the main body of our new \CCSPStlye{Calibrator} as shown below.
+We also want to save all columns that \code{jec\_nominal} produces to disk for later use, which is why we need to add it to the \code{produces} set as well.
+
+All \CCSPStlye{TaskArrayFunction}s have access to information of the current point within the task graph, such as the \code{config} object mentioned in Sec.~\ref{sec:configs} and the current dataset that is processed.
+Their behavior can depend on this information, which is shown for the jet energy resolution~(JER) calibration of our new \code{jet\_energy} module.
+JER needs to be applied to simulated samples only, which is realized in the code correspondingly.
+The set of columns to be loaded from disk is also dynamically configured in the \code{init} function of the \code{jet\_energy} \CCSPStlye{Calibrator} such that columns corresponding to JER are only added to the \code{uses} and \code{produces} sets if necessary.
+
+\begin{exercise}
+	Familiarize yourself with how the \code{jet\_energy} works.
+\end{exercise}
