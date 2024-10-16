@@ -1,0 +1,23 @@
+on:
+    schedule:
+        - cron: "*/5 * * * *"
+    workflow_dispatch:
+
+name: "Sync overleaf"
+jobs:
+    sync:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+        - name: Sync overleaf
+          run: |
+            git remote add overleaf https://git:${OVERLEAF_TOKEN}@git.overleaf.com/65df171af9ff7989580f017d
+            git remote add origin_token https://git:${GITHUB_TOKEN}@github.com/columnflow/demo_documentation.git
+
+            git fetch overleaf
+            git pull overleaf master
+            git push origin_token HEAD:sync_overleaf
+
+          env:
+            OVERLEAF_TOKEN: ${{ secrets.OVERLEAF_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
