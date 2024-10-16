@@ -32,7 +32,8 @@
 \usepackage{tabularray}
 \usepackage[most]{tcolorbox}
 \usepackage{tocloft}  % for lists for custom environments
-
+\usepackage{xparse}
+\usepackage{quotes}
 
 \NewTblrTheme{longtable1}{
     \DefTblrTemplate{conthead-text}{fancy}{}
@@ -212,13 +213,22 @@
 
 % Define the 'exercise' environment to use the custom style
 
-\newenvironment{exercise} {
+\NewDocumentEnvironment{exercise}{mo}{
+	% #1: Title for Exercise
+	% #2: Solution
 	\refstepcounter{xrcise}
 	\par
-	\begin{tcolorbox}[myboxstyle={Exercise \thexrcise}]
+	\begin{tcolorbox}[myboxstyle={Exercise \thexrcise: #1}]
 	}{
+	\ExplSyntaxOn
+	\IfNoValueTF{#2}
+	{}
+	{\newline The~solution~can~be~found~in~\code{#2}}%
+	\ignorespaces
+	\ExplSyntaxOff
 	\end{tcolorbox}
-	\addcontentsline{ex}{xrcise}{Exercise \protect\numberline{\thexrcise}}\par
+	\addcontentsline{ex}{xrcise}{Exercise \protect\numberline{\thexrcise}: \protect#1}
+	\par
 }
 
 % also create an automatically-generated list for the exercises
@@ -230,21 +240,21 @@
 % define which files to consider for compilation.
 % Nice to test compile smaller parts of the document without changing the toc/page numbering
 \includeonly{%
-%	chapters/intro,
-%	sections/general_intro,
+	chapters/intro,
+	sections/general_intro,
 	chapters/exercise,
-%	sections/goal,
-%	sections/setup,
-%	sections/strategy,
-%	sections/configs,
-%	sections/taskarrayfunctions,
+	sections/goal,
+	sections/setup,
+	sections/strategy,
+	sections/configs,
+	sections/taskarrayfunctions,
 	sections/calibrator,
-%	sections/selector,
-%	sections/producer,
-%	sections/categorizer,
-%	sections/shifts,
-%	sections/event_weights,
-%	sections/inference,
+	sections/selector,
+	sections/producer,
+	sections/categorizer,
+	sections/shifts,
+	sections/event_weights,
+	sections/inference,
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

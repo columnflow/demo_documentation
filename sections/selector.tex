@@ -1,7 +1,15 @@
 \section{Writing a Selector}\label{sec:selector}
 
-The lepton selection we want to implement in this exercise is the following:
+The \CCSPStlye{Selector} class should be used to implement analysis selections.
+This is a crucial step in the workflow since the decision to keep or reject objects or even whole events is performed here.
+Since the selection usually depends on for example four momenta of the objects within the events, it is executed after the calibration.
+The corresponding task is called \CCSPStlye{cf.SelectEvents}.
+For more information, please consider Ref.~\cite{cf_repo}.
 
+\begin{table}[t]
+	\Caption{Selection criteria for leptons}{Shown are the selection criteria for electrons (muons) at the 'loose' and 'tight'}
+\end{table}
+In this part of the tutorial, we will write selections for electrons and muons.
 \textbf{\underline{Loose Electrons}}
 \begin{itemize}
     \item
